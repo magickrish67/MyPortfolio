@@ -1,20 +1,22 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Enable smooth scrolling for all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // Get the target element using the href attribute
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-
-            if (targetElement) {
-                // Scroll smoothly to the target element's position
-                window.scrollTo({
-                    top: targetElement.offsetTop - 70, // Offset by Nav height
-                    behavior: 'smooth'
-                });
+    
+    // Create an observer that detects when elements enter the screen
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // If the element is visible in the viewport
+            if (entry.isIntersecting) {
+                // Add the class that triggers the animation
+                entry.target.classList.add('visible');
             }
         });
+    }, {
+        threshold: 0.1 // Trigger when 10% of the element is visible
     });
+
+    // Tell the observer to watch all sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section) => {
+        observer.observe(section);
+    });
+
 });
